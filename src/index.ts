@@ -4,6 +4,7 @@ import * as pogobuf from 'pogobuf';
 import * as logger from 'winston';
 import * as moment from 'moment';
 import * as fs from 'fs-promise';
+import * as Bluebird from 'bluebird';
 
 async function Main() {
     logger.info('Login to pogo');
@@ -34,9 +35,17 @@ async function Main() {
     await client.batchStart().batchCall();
     await client.getPlayer('FR', 'fr', 'Europe/Paris');
 
-    logger.info('Logged in, downloading game master.');
+    logger.info('Logged in, downloading game master...');
 
-    let response = await client.downloadItemTemplates(false);
+    let item_templates = [];
+
+    let response = await client.downloadItemTemplates(true);
+    item_templates = item_templates.concat(response.item_templates);
+    while (response.page_offset !== 0) {
+        response = await client.downloadItemTemplates(true, response.page_offset, response.timestamp_ms);
+        item_templates = item_templates.concat(response.item_templates);
+    }
+
     logger.info('Last updated %s', moment(response.timestamp_ms).fromNow());
 
     let gameMaster = response.item_templates;

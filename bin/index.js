@@ -37,8 +37,14 @@ function Main() {
         yield client.init(false);
         yield client.batchStart().batchCall();
         yield client.getPlayer('FR', 'fr', 'Europe/Paris');
-        logger.info('Logged in, downloading game master.');
-        let response = yield client.downloadItemTemplates(false);
+        logger.info('Logged in, downloading game master...');
+        let item_templates = [];
+        let response = yield client.downloadItemTemplates(true);
+        item_templates = item_templates.concat(response.item_templates);
+        while (response.page_offset !== 0) {
+            response = yield client.downloadItemTemplates(true, response.page_offset, response.timestamp_ms);
+            item_templates = item_templates.concat(response.item_templates);
+        }
         logger.info('Last updated %s', moment(response.timestamp_ms).fromNow());
         let gameMaster = response.item_templates;
         let json = JSON.stringify(gameMaster, null, 4);
