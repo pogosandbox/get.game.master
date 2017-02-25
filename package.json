@@ -1,0 +1,27 @@
+{
+  "name": "get.game.master",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/index.js",
+  "author": "niico",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "fs-promise": "^2.0.0",
+    "moment": "^2.17.1",
+    "pogobuf": "pogosandbox/pogobuf",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "@types/bytebuffer": "^5.0.33",
+    "@types/fs-promise": "^1.0.1",
+    "@types/long": "^3.0.31",
+    "@types/node": "^7.0.5",
+    "@types/winston": "^2.2.0",
+    "tslint": "^4.4.2",
+    "typescript": "^2.1.6"
+  }
+}
